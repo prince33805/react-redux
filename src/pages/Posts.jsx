@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, deletePost } from '../slices/postsSlice';
-import { Link } from 'react-router-dom';
 import { createPost } from '../slices/postsSlice';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
@@ -51,8 +50,8 @@ const Posts = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Posts</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold mb-4 sm:mb-0">Posts</h1>
         <div>
           {username ? (
             <>
@@ -85,6 +84,7 @@ const Posts = () => {
           )}
         </div>
       </div>
+
       {username && (
         <form onSubmit={handleCreatePost} className="mb-6 p-4 border rounded">
           <h2 className="text-lg font-semibold">Create New Post</h2>
@@ -110,22 +110,27 @@ const Posts = () => {
         </form>
       )}
 
-      {posts.map((post) => (
-        <div key={post.id} className="border p-4 mt-2">
-          <h2 className="text-lg font-semibold">{post.title}</h2>
-          <p>{post.content}</p>
-          <p className="text-sm text-gray-600">Author: {post.author}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <div
+            key={post.id}
+            className="border p-4 mt-2 rounded-lg shadow-sm flex flex-col"
+          >
+            <h2 className="text-xl font-semibold">{post.title}</h2>
+            <p>{post.content}</p>
+            <p className="text-sm text-gray-600">Author: {post.author}</p>
 
-          {post.author === username && (
-            <button
-              onClick={() => dispatch(deletePost(post.id))}
-              className="bg-red-500 text-white px-4 py-1 mt-2"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      ))}
+            {post.author === username && (
+              <button
+                onClick={() => dispatch(deletePost(post.id))}
+                className="bg-red-500 text-white px-4 py-1 mt-2 rounded"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
